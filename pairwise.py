@@ -8,7 +8,29 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from sklearn.metrics import pairwise_distances
 from sklearn.metrics.pairwise import PAIRWISE_DISTANCE_FUNCTIONS
 from scipy.spatial.distance import _METRICS_NAMES
+from skbio.diversity.beta import weighted_unifrac, unweighted_unifrac
+from skbio.tree import TreeNode
 import pandas as pd
+
+def setup_unifrac(tree_file, features, metric):
+    """
+    Setup unifrac function to pass to `pairwise_distances`
+    :param tree: skbio-readable tree
+    :param features: Features to keep in the tree
+    :param metric: 'weighted_unifrac' or 'unweighted_unifrac'
+    :return: unifrac funtion
+    """
+    # Load tree
+    tree = TreeNode.read(tree_file)
+
+    # Shear to OTUs of interest
+    sheared = tree.shear(features).root_at_midpoint()
+
+    # Get metric function
+    fnc = weighted_unifrac if metric == 'weighted_unifrac' else unweighted_unifrac
+    def unifrac(u, v):
+        return fnc(u, v, features, sheared)
+    return unifrac
 
 
 if __name__ == '__main__':
@@ -35,7 +57,12 @@ if __name__ == '__main__':
     samples = df.columns
 
     # Compute pairwise distances
-    dists = pairwise_distances(df.T, n_jobs=args.t)
+    if 'unifrac' in args.m:
+        features = df.index
+        metric = setup_unifrac(args.d, df.index, args.m)
+    else:
+        metric = args.m
+    dists = pairwise_distances(df.T, metric=metric, n_jobs=args.t)
 
     # Place into dataframe
     dist_df = pd.DataFrame(dists, samples, samples)
