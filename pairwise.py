@@ -8,8 +8,8 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from sklearn.metrics import pairwise_distances
 from sklearn.metrics.pairwise import PAIRWISE_DISTANCE_FUNCTIONS
 from scipy.spatial.distance import _METRICS_NAMES
-# from skbio.diversity.beta import weighted_unifrac, unweighted_unifrac
-# from skbio.tree import TreeNode
+from skbio.diversity.beta import weighted_unifrac, unweighted_unifrac
+from skbio.tree import TreeNode
 import pandas as pd
 
 def setup_unifrac(tree_file, features, metric):
