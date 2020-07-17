@@ -1,5 +1,13 @@
 #!/bin/bash -l
+# Usage: qsub pairwise.qsub INPUTPATH METRIC OUTPUTPATH [OPTIONAL: TREEPATH]
 
 module load conda
 conda activate /projectnb/talbot-lab-data/msilver/.conda/envs/msilver
 
+cmd="python /projectnb/talbot-lab-data/msilver/BUpwdist/pairwise.py -i $1 -m $2 -o $3"
+if [ -z $4 ]
+then
+    cmd="$cmd -d $4"
+fi
+echo $cmd
+eval $cmd
