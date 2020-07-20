@@ -7,7 +7,7 @@ module load miniconda
 conda activate /projectnb/talbot-lab-data/msilver/.conda/envs/msilver
 
 cmd="python /projectnb/talbot-lab-data/msilver/BUpwdist/pairwise.py -i $1 -m $2 -o $3"
-if [ -z $4 ]
+if [ -n $4 ]
 then
     cmd="$cmd -d $4"
 fi
