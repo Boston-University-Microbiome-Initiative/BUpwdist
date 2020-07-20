@@ -11,7 +11,12 @@ from scipy.spatial.distance import _METRICS_NAMES
 from skbio.diversity.beta import weighted_unifrac, unweighted_unifrac
 from skbio.tree import TreeNode
 import pandas as pd
-import os
+import os, sys
+
+def disp(x):
+    """Flush prints"""
+    print(x)
+    sys.stdout.flush()
 
 def setup_unifrac(tree_file, features, metric):
     """
@@ -22,11 +27,11 @@ def setup_unifrac(tree_file, features, metric):
     :return: unifrac funtion
     """
     # Load tree
-    print('Loading tree...')
+    disp('Loading tree...')
     tree = TreeNode.read(tree_file)
 
     # Shear to OTUs of interest
-    print('Shearing tree...')
+    disp('Shearing tree...')
     sheared = tree.shear(features).root_at_midpoint()
 
     # Get metric function
@@ -66,11 +71,11 @@ if __name__ == '__main__':
     # OUTPUT: %s
     ###############################################
     """ % (inputpath, args.m, outputpath)
-    print(welcome)
+    disp(welcome)
     # Load table
-    print('Loading table...')
+    disp('Loading table...')
     df = pd.read_csv(inputpath, index_col=0)
-    print('%s samples and %s features detected' % (df.shape[1], df.shape[0]))
+    disp('%s samples and %s features detected' % (df.shape[1], df.shape[0]))
     samples = df.columns
 
     # Compute pairwise distances
@@ -79,14 +84,14 @@ if __name__ == '__main__':
         metric = setup_unifrac(args.d, df.index, args.m)
     else:
         metric = args.m
-    print('Calculating pairwise distances...')
+    disp('Calculating pairwise distances...')
     dists = pairwise_distances(df.T, metric=metric, n_jobs=args.t)
 
     # Place into dataframe
     dist_df = pd.DataFrame(dists, samples, samples)
 
     # Save
-    print('Saving pairwise distances to: %s' % outputpath)
+    disp('Saving pairwise distances to: %s' % outputpath)
 
     # Create output directory if it doesn't exist
     outdir = os.path.dirname(outputpath)
