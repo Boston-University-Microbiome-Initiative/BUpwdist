@@ -1,6 +1,8 @@
 #!/bin/bash -l
 # Usage: qsub pairwise.qsub INPUTPATH METRIC OUTPUTPATH [OPTIONAL: TREEPATH]
 
+#$ -j y
+
 module load miniconda
 conda activate /projectnb/talbot-lab-data/msilver/.conda/envs/msilver
 
