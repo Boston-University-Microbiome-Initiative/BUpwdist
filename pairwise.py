@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
     # Load table
     print('Loading table...')
-    df = pd.read_csv(args.i)
+    df = pd.read_csv(args.i, index_col=0)
     print('%s samples and %s features detected' % (df.shape[1], df.shape[0]))
     samples = df.columns
 

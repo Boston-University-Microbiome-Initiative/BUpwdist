@@ -25,5 +25,5 @@ conda activate /projectnb/talbot-lab-data/msilver/.conda/envs/msilver
 Run a batch job on the SCC: `qsub -pe omp <number of threads> -P <BU project name> $pwdist/pairwise.qsub <path to feature matrix> <metric> <output path>`
 
 Notes:
-- Inputs are assumed to be CSVs
+- Inputs are assumed to be CSVs (first (index) column: features (ex. OTUs) and remaining columns are samples)
 - Submitting input matrices with null values can cause errors with some metrics or have unintended consequences with others
