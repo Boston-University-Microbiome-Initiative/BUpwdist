@@ -11,6 +11,7 @@ from scipy.spatial.distance import _METRICS_NAMES
 from skbio.diversity.beta import weighted_unifrac, unweighted_unifrac
 from skbio.tree import TreeNode
 import pandas as pd
+import os
 
 def setup_unifrac(tree_file, features, metric):
     """
@@ -54,17 +55,21 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    # Get absolute paths
+    inputpath = os.path.abspath(args.i)
+    outputpath = os.path.abspath(args.o)
+
     welcome = """
     ######## PAIRWISE DISTANCE CALCULATION ########
     # INPUT: %s
     # METRIC: %s
     # OUTPUT: %s
     ###############################################
-    """ % (args.i, args.m, args.o)
+    """ % (inputpath, args.m, outputpath)
     print(welcome)
     # Load table
     print('Loading table...')
-    df = pd.read_csv(args.i, index_col=0)
+    df = pd.read_csv(inputpath, index_col=0)
     print('%s samples and %s features detected' % (df.shape[1], df.shape[0]))
     samples = df.columns
 
@@ -81,5 +86,10 @@ if __name__ == '__main__':
     dist_df = pd.DataFrame(dists, samples, samples)
 
     # Save
-    print('Saving pairwise distances to: %s' % args.o)
-    dist_df.to_csv(args.o)
+    print('Saving pairwise distances to: %s' % outputpath)
+
+    # Create output directory if it doesn't exist
+    outdir = os.path.dirname(outputpath)
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
+    dist_df.to_csv(outputpath)
