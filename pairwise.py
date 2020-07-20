@@ -61,7 +61,7 @@ if __name__ == '__main__':
     # OUTPUT: %s
     ###############################################
     """ % (args.i, args.m, args.o)
-
+    print(welcome)
     # Load table
     print('Loading table...')
     df = pd.read_csv(args.i, index_col=0)
