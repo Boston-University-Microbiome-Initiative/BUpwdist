@@ -11,7 +11,7 @@ Provide a feature matrix that is [features X samples], like an OTU table:
 # Documentation
 Add an environment variable to the code in your `.bashrc` (only do this once!):
 ```bash
-echo "export pwdist=/projectnb/talbot-lab-data/msilver/BUpwdist/" >> ~/.bashrc
+echo "export pwdist=/projectnb/talbot-lab-data/msilver/BUpwdist" >> ~/.bashrc
 ```
 
 Distance metrics: Available metrics can be viewed with `python $pwdist/pairwise.py -h` under the `-m` option. The `unifrac` metrics require a tree reference that represents your features. The default tree is the SILVA_132 99% clustered OTUs, located at: `/projectnb/talbot-lab-data/msilver/ref_db/SILVA_132_QIIME_release/trees/99/99_otus.tre`
