@@ -52,8 +52,18 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    welcome = """
+    ######## PAIRWISE DISTANCE CALCULATION ########
+    # INPUT: %s
+    # METRIC: %s
+    # OUTPUT: %s
+    ###############################################
+    """ % (args.i, args.m, args.o)
+
     # Load table
+    print('Loading table...')
     df = pd.read_csv(args.i)
+    print('%s samples and %s features detected' % (df.shape[1], df.shape[0]))
     samples = df.columns
 
     # Compute pairwise distances
@@ -62,10 +72,12 @@ if __name__ == '__main__':
         metric = setup_unifrac(args.d, df.index, args.m)
     else:
         metric = args.m
+    print('Calculating pairwise distances...')
     dists = pairwise_distances(df.T, metric=metric, n_jobs=args.t)
 
     # Place into dataframe
     dist_df = pd.DataFrame(dists, samples, samples)
 
     # Save
+    print('Saving pairwise distances to: %s' % args.o)
     dist_df.to_csv(args.o)
