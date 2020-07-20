@@ -21,9 +21,11 @@ def setup_unifrac(tree_file, features, metric):
     :return: unifrac funtion
     """
     # Load tree
+    print('Loading tree...')
     tree = TreeNode.read(tree_file)
 
     # Shear to OTUs of interest
+    print('Shearing tree...')
     sheared = tree.shear(features).root_at_midpoint()
 
     # Get metric function
