@@ -18,7 +18,7 @@ Distance metrics: Available metrics are those listed [here](https://scikit-learn
 
 Run a local job: Use `python $pwdist/pairwise.py -h` to view input arguments. Local runs require having `sklearn`, `skbio`, `scipy`, and `pandas` installed *or* activating my conda environment (which has these) with:
 ```bash
-module load conda
+module load miniconda
 conda activate /projectnb/talbot-lab-data/msilver/.conda/envs/msilver
 ```
 
