@@ -83,7 +83,7 @@ if __name__ == '__main__':
         features = df.index
         metric = setup_unifrac(args.d, df.index, args.m)
     elif (args.m in _METRICS_NAMES) & (args.m not in PAIRWISE_DISTANCE_FUNCTIONS.keys()):
-        import scipy.special.distance as sd
+        import scipy.spatial.distance as sd
         metric = getattr(sd, args.m)
     else:
         metric = args.m
