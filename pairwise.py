@@ -43,8 +43,7 @@ def setup_unifrac(tree_file, features, metric):
 
 if __name__ == '__main__':
     parser = ArgumentParser(formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-i', help='Path to feature matrix dataframe CSV [ features (ex. OTUs) X samples ]', required=True)
-
+    parser.add_argument('-i', help='Path to feature matrix dataframe table [ features (ex. OTUs) X samples ]', required=True)
     pwdist_fncs = sorted(list(set(list(PAIRWISE_DISTANCE_FUNCTIONS.keys()) + _METRICS_NAMES + ['weighted_unifrac', 'unweighted_unifrac'])))
     parser.add_argument('-m', help='Metric. Use a metric from the list here:\n'
                                    'https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise_distances.html\n'
@@ -56,6 +55,8 @@ if __name__ == '__main__':
                                    'Default: /projectnb/talbot-lab-data/msilver/ref_db/SILVA_132_QIIME_release/trees/99/99_otus.tre',
                         default='/projectnb/talbot-lab-data/msilver/ref_db/SILVA_132_QIIME_release/trees/99/99_otus.tre')
     parser.add_argument('-t', help='Number of threads (default: all)', default=-1)
+    parser.add_argument('-s', help='Delimiter for table. Default: ,', default=',')
+    parser.add_argument('-f', help='Value to fill null values with. Default is no filling.')
     parser.add_argument('-o', help='Path to output', required=True)
 
     args = parser.parse_args()
@@ -88,7 +89,8 @@ if __name__ == '__main__':
     else:
         metric = args.m
     disp('Calculating pairwise distances...')
-    dists = pairwise_distances(df.T, metric=metric, n_jobs=args.t)
+    data = df.T.fillna(args.f)
+    dists = pairwise_distances(data, metric=metric, n_jobs=args.t)
 
     # Place into dataframe
     dist_df = pd.DataFrame(dists, samples, samples)
